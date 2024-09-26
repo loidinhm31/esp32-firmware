@@ -1,0 +1,46 @@
+[package]
+name = "rust_esp32_servo"
+version = "0.1.0"
+authors = ["Loi Dinh <loidinh.git@gmail.com>"]
+edition = "2021"
+resolver = "2"
+
+[profile.release]
+opt-level = "s"
+
+[profile.dev]
+debug = true    # Symbols are nice, and they don't increase the size on Flash
+opt-level = "z"
+
+[features]
+default = [
+    "esp32c3",
+    "jtag",
+    "log",
+]
+
+log = [
+    "dep:log",
+    "esp-hal/log",
+    "esp-println/log",
+    "esp-backtrace/println",
+]
+
+jtag = ["esp-println/jtag-serial"]
+
+esp32c3 = [
+    "esp-hal/esp32c3",
+    "esp-println/esp32c3",
+    "esp-backtrace/esp32c3",
+
+]
+#esp32c6 = ["esp-hal/esp32c6", "esp-println/esp32c6", "esp-backtrace/esp32c6", "esp-wifi?/esp32c6", "esp-hal-embassy?/esp32c6"]
+
+[dependencies]
+esp-hal = { version = "0.20.1" }
+esp-println = { version = "0.11.0", default-features = false, features = ["critical-section", "colors"] }
+esp-backtrace = { version = "0.14.1", features = ["panic-handler", "exception-handler"] }
+
+defmt = { version = "0.3", optional = true }
+log = { version = "0.4", optional = true }
+

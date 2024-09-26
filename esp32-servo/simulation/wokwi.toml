@@ -1,0 +1,4 @@
+[wokwi]
+version = 1
+elf = '../target/riscv32imc-unknown-none-elf/release/rust_esp32_servo'
+firmware = '../target/riscv32imc-unknown-none-elf/release/rust_esp32_servo'
