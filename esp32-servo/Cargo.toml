@@ -14,7 +14,7 @@ opt-level = "z"
 
 [features]
 default = [
-    "esp32c3",
+    "esp32c6",
     "jtag",
     "log",
 ]
@@ -28,13 +28,12 @@ log = [
 
 jtag = ["esp-println/jtag-serial"]
 
-esp32c3 = [
-    "esp-hal/esp32c3",
-    "esp-println/esp32c3",
-    "esp-backtrace/esp32c3",
+esp32c6 = [
+    "esp-hal/esp32c6",
+    "esp-println/esp32c6",
+    "esp-backtrace/esp32c6",
 
 ]
-#esp32c6 = ["esp-hal/esp32c6", "esp-println/esp32c6", "esp-backtrace/esp32c6", "esp-wifi?/esp32c6", "esp-hal-embassy?/esp32c6"]
 
 [dependencies]
 esp-hal = { version = "0.20.1" }

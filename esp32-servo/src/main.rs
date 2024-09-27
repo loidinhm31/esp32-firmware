@@ -52,9 +52,12 @@ fn main() -> ! {
 
     let max_duty = get_max_duty(duty_cycle_resolution); // Get max duty value
     println!("Max Duty {}", max_duty);
-    let min_limit = max_duty * 25 / 1000; // ~5% duty
+
+    let neutral_duty = max_duty * 75 / 1000; // ~7.5% duty (neutral, stop)
+
+    let min_limit = max_duty * 50 / 1000; // ~5% duty
     println!("Min Limit {}", min_limit);
-    let max_limit = max_duty * 125 / 1000; // ~10% duty
+    let max_limit = max_duty * 100 / 1000; // ~10% duty
     println!("Max Limit {}", max_limit);
 
     channel0
@@ -69,12 +72,12 @@ fn main() -> ! {
 
     loop {
         for angle in 0..=180 {
-            channel0.set_duty_hw(map(angle, 0, 180, min_limit as u32, max_limit as u32));
+            channel0.set_duty_hw(map(angle, 0, 180, min_limit, max_limit));
             delay.delay_millis(12);
         }
 
         for angle in (0..=180).rev() {
-            channel0.set_duty_hw(map(angle, 0, 180, min_limit as u32, max_limit as u32));
+            channel0.set_duty_hw(map(angle, 0, 180, min_limit, max_limit));
             delay.delay_millis(12);
         }
     }
@@ -88,4 +91,10 @@ fn get_max_duty(duty_cycle_resolution: timer::config::Duty) -> u32 {
 // Function that maps one range to another
 fn map(x: u32, in_min: u32, in_max: u32, out_min: u32, out_max: u32) -> u32 {
     (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+}
+
+fn map_duty_for_angle(angle: u32) -> u32 {
+    let ms = 1000 + (angle * 1000) / 90;
+    let duty = (16383 * ms) / 20000;
+    duty
 }
